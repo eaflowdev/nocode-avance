@@ -1,0 +1,107 @@
+{
+  "name": "HttpRequest",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5fceab47-873c-4f8b-9ad6-2382c6a97e91",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/users",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "4879159c-4d5c-4cc0-8d63-88d903590f6b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "54bd418d-b5c2-427f-a335-17c0cd72ed8f",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "aa200fd5-0eb7-4584-a22f-6d8266660df3",
+              "name": "username",
+              "value": "={{ $json.username }}",
+              "type": "string"
+            },
+            {
+              "id": "254f38b0-c804-4adb-adf9-74649dc67691",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "6333db75-0338-4ad4-b10a-315a34880097",
+              "name": "address",
+              "value": "={{ $json.address }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "d1d0fc20-f158-462c-90c6-b9e8036e6d8a",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "23e23b63-a0f4-4440-b324-1a8c934acfa4",
+  "meta": {
+    "instanceId": "dc2fb270a5e57238ef97ed32d82ca4e1a4a96545f813fbc7da6baaf5bc3d3eff"
+  },
+  "id": "cxN7Ayih1R8v6Afl",
+  "tags": []
+}

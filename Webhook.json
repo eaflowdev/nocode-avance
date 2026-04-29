@@ -1,0 +1,312 @@
+{
+  "name": "Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "check-age",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -208,
+        48
+      ],
+      "id": "9425aecd-44d0-47f2-b124-0c85da79eb3e",
+      "name": "Webhook",
+      "webhookId": "a103a860-5f2e-4b4b-b142-b3e5ab9d924e"
+    },
+    {
+      "parameters": {
+        "resource": "table",
+        "operation": "create",
+        "tableName": "users",
+        "columns": {
+          "column": [
+            {
+              "name": "nom"
+            },
+            {
+              "name": "adresse"
+            },
+            {
+              "name": "age",
+              "type": "number"
+            },
+            {
+              "name": "isAdult",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        -256
+      ],
+      "id": "9379910a-b81b-4312-adbe-5fe7fed78f0b",
+      "name": "Create a data table"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "XYxxvdSfURGviBBP",
+          "mode": "list",
+          "cachedResultName": "users",
+          "cachedResultUrl": "/projects/1uUzY9iHJMzwfNgU/datatables/XYxxvdSfURGviBBP"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "isAdult": "={{ $json.body.age >= 18 }}",
+            "age": "={{ $json.body.age }}",
+            "nom": "={{ $json.body.name }}",
+            "adresse": "={{ $json.body.email }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "nom",
+              "displayName": "nom",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "adresse",
+              "displayName": "adresse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "age",
+              "displayName": "age",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "isAdult",
+              "displayName": "isAdult",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        -160
+      ],
+      "id": "0b32765a-8a16-454c-81d8-996ff47bfc13",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "XYxxvdSfURGviBBP",
+          "mode": "list",
+          "cachedResultName": "users",
+          "cachedResultUrl": "/projects/1uUzY9iHJMzwfNgU/datatables/XYxxvdSfURGviBBP"
+        },
+        "limit": 1,
+        "orderBy": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        -160
+      ],
+      "id": "27b79adc-cbba-4cdd-9828-2a61d66083e4",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        720,
+        48
+      ],
+      "id": "2eb48b84-50e2-4470-a28d-491547e9fefb",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7f37c352-f311-4fc3-a287-4395fbeaf42f",
+              "leftValue": "={{ $workflow.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "72db5be6-b0a6-4cdc-bb74-54a599d9fe70",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c937e5c4-6805-4af6-b170-704f116b5cad",
+              "leftValue": "={{ $json.body.message }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "ad771db3-005d-43b6-a78e-669c06b6537a",
+              "leftValue": "={{ $json.body.age }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        48
+      ],
+      "id": "dddeab25-4e10-47ff-b7f8-b6491bc88a41",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"validation error\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        208,
+        144
+      ],
+      "id": "6e7a8808-3f2c-4c7b-a5e4-24b4f6bea18c",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "cb2c4b77-ae03-4758-bdaf-bfb8e986998b",
+  "meta": {
+    "instanceId": "dc2fb270a5e57238ef97ed32d82ca4e1a4a96545f813fbc7da6baaf5bc3d3eff"
+  },
+  "id": "Hw1pGuhbpNsp2xZH",
+  "tags": []
+}

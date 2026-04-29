@@ -1,0 +1,178 @@
+{
+  "name": "SplitMerge",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        -32
+      ],
+      "id": "775810bf-d840-4b1b-a21c-498f17baa37c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  { json: {name: \"Alice\", age: 17 } },\n  { json: {name: \"Bob\", age: 25 } },\n  { json: {name: \"Charlie\", age: 16 } },\n  { json: {name: \"Alice\", age: 17 } },\n  { json: {name: \"Bob\", age: 25 } },\n  { json: {name: \"Charlie\", age: 16 } },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        32,
+        -32
+      ],
+      "id": "7bf51450-abc7-4cbe-bd35-06f614eb1fa7",
+      "name": "DataMock"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  item.json.isAdult = Number(item.json.age) >= 18;\n  return item \n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        -32
+      ],
+      "id": "78bf0fef-ebfe-4bef-94b9-44b40be65ffd",
+      "name": "isAdult"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "name, age, isAdult",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -32
+      ],
+      "id": "66c328d6-fd69-489d-8a1e-261912b7ec88",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  item.json.timeStamp1 = DateTime.now();\n  return item\n})"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        -80
+      ],
+      "id": "18fc7db8-130e-4f4b-9089-9a975f84fe47",
+      "name": "TimeStamp1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  item.json.timeStamp2 = DateTime.now();\n  return item\n})"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        112
+      ],
+      "id": "c98e4e29-86b3-41a5-80a6-0bfd6bc54051",
+      "name": "TimeStamp2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1024,
+        16
+      ],
+      "id": "79f973c1-c98c-48fe-ad56-b3b3c5a35ac7",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "DataMock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DataMock": {
+      "main": [
+        [
+          {
+            "node": "isAdult",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "isAdult": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "TimeStamp1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TimeStamp2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TimeStamp1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TimeStamp2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5030f463-45a8-48b4-9aa8-8dcd6a1ff084",
+  "meta": {
+    "instanceId": "dc2fb270a5e57238ef97ed32d82ca4e1a4a96545f813fbc7da6baaf5bc3d3eff"
+  },
+  "id": "QyQM7cAY2BHMdHOB",
+  "tags": []
+}
