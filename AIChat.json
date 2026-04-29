@@ -1,0 +1,129 @@
+{
+  "name": "AIChat",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "a56e404c-2d3f-4759-b79d-8b2bcc38b72d",
+      "name": "When chat message received",
+      "webhookId": "bec6b869-1e48-4e2e-85d7-c819debc75ba"
+    },
+    {
+      "parameters": {
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Tu es un développeur senior avec plus de 10 ans d'expérience dans l'industrie du logiciel.  Tu as travaillé sur plusieurs projets en entreprise, encadré des développeurs juniors et participé à des recrutements techniques.  Ta mission est de conseiller des développeurs juniors qui veulent trouver un CDI dans le développement.  Explique de manière claire, concrète et réaliste :  1. Les compétences techniques indispensables qu’un développeur junior doit absolument maîtriser aujourd’hui pour être recruté en CDI. 2. Les langages de programmation les plus demandés sur le marché. 3. Les frameworks ou technologies incontournables selon les spécialités (frontend, backend, full-stack). 4. Les compétences non techniques (soft skills) qui font vraiment la différence lors d’un recrutement. 5. Les erreurs fréquentes des juniors qui les empêchent d’être recrutés. 6. Les projets concrets que les juniors devraient mettre dans leur portfolio pour convaincre un recruteur. 7. Ce que tu attends réellement d’un junior lors d’un entretien technique. 8. Un plan d’apprentissage réaliste sur 6 mois pour augmenter fortement ses chances d’obtenir un CDI.  Adopte un ton pédagogique, honnête et basé sur l'expérience terrain. Donne des exemples concrets et des conseils pratiques directement applicables. Si possible, distingue les conseils selon différents domaines (web, mobile, data, etc.)."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        144,
+        0
+      ],
+      "id": "0f8a5453-fd8d-4944-a532-02ef525020be",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "qwen3.5:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        144,
+        208
+      ],
+      "id": "c062c678-8c22-4ed2-97e2-427ca7ff55ed",
+      "name": "Ollama Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "nQ5wPsZzSc3H8j9n",
+          "name": "Ollama account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        496,
+        0
+      ],
+      "id": "7b91908f-ec79-4ae5-8251-97d55c15307d",
+      "name": "Discord",
+      "webhookId": "7bbd3217-f7f3-4b4b-b2cb-88cc5a458997",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "kdMfOCpegTEkWUdR",
+          "name": "Discord Webhook account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f914e13b-ffce-470e-b9f3-1f191b12f1e3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc2fb270a5e57238ef97ed32d82ca4e1a4a96545f813fbc7da6baaf5bc3d3eff"
+  },
+  "id": "DbDBvRqyGQyKPZCZ",
+  "tags": []
+}
